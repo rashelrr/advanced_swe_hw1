@@ -109,23 +109,26 @@ def p1_move():
     column_num = int(column[-1])
 
     # check if move is valid
-    valid_current_turn, reason_current_turn = game.check_current_turn('p1')
-    valid_column, reason_filled_column = game.check_filled_column(column_num)
+    valid_current_turn = game.check_current_turn('p1')
+    valid_column = game.check_filled_column(column_num)
 
     if valid_current_turn is True and valid_column is True:
-        game.update_board()                    # update board with valid move
-        result_of_game = game.check_if_win()   # check if player1 won
+        game.update_board(column_num, 1)        # update board with valid move
+        game.continue_game('p2')
+
+        print("the game board: ")
+        for row in range(6):
+            print(game.board[row])
+        #result_of_game = game.check_if_win()   # check if player1 won
+    
 
 
-
-    if valid is True:
-        return jsonify(move=game.board, invalid=False, winner=game.game_result)  #current_winner is game_result?
+    if valid_current_turn is False:        
+        return jsonify(move=game.board, invalid = True, reason = "Not your turn. Please wait your turn.", winner = game.game_result)
+    elif valid_column is False:
+        return jsonify(move=game.board, invalid = True, reason = "Column is filled. Please choose a different column.", winner = game.game_result)
     else:
-        return jsonify(move=game.board, invalid = True, reason = "This is invalid because...", winner = game.game_result)
-
-
-
-
+        return jsonify(move=game.board, invalid=False, winner=game.game_result)  
 
 
 '''
@@ -135,7 +138,30 @@ Same as '/move1' but instead proccess Player 2
 
 @app.route('/move2', methods=['POST'])
 def p2_move():
-    pass
+    attempted_move = request.get_json()
+    column = attempted_move['column']
+    column_num = int(column[-1])
+
+    # check if move is valid
+    valid_current_turn = game.check_current_turn('p2')
+    valid_column = game.check_filled_column(column_num)
+
+    if valid_current_turn is True and valid_column is True:
+        game.update_board(column_num, 2)                    # update board with valid move
+        game.continue_game('p1')
+        
+        print("the game board: ")
+        for row in range(6):
+            print(game.board[row])
+
+        #result_of_game = game.check_if_win()   # check if player1 won
+
+    if valid_current_turn is False:        
+        return jsonify(move=game.board, invalid = True, reason = "Not your turn. Please wait your turn.", winner = game.game_result)
+    elif valid_column is False:
+        return jsonify(move=game.board, invalid = True, reason = "Column is filled. Please choose a different column.", winner = game.game_result)
+    else:
+        return jsonify(move=game.board, invalid=False, winner=game.game_result)
 
 
 

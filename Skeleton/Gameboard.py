@@ -19,32 +19,34 @@ class Gameboard():
 
     def check_current_turn(self, current_player):
         if self.current_turn == current_player:
-            return True, ""
-        else:
-            return False, "Not your turn. Please wait your turn."
+            return True
+        return False
 
     def check_filled_column(self, column_num):
-
         if self.board[0][column_num - 1] == 0:
-            return True, ""      
-        else:
-            return False, "Column is filled. Please choose a different column."
+            return True  
+        return False
 
-    def update_board(self):
-        self.board
+    def update_board(self, column_num, curr_player_num):
+        column_index = column_num - 1
+        largest_row_index = len(self.board) - 1
+        
+        for r in range(largest_row_index, -1, -1):
+            if self.board[r][column_index] == 0:
+                self.board[r][column_index] = curr_player_num
+                break
+        
+        return None
+
+    def check_if_win(self, curr_player_num, ):
+        pass
+        # check if four 1's in a row
+
+        # check horizontal win (check each row)
 
 
-    def check_if_win(self):
-        if ...:
-            pass
-            # modify self.board to reflect change...?
-        else: 
-            self.game_result = ""
-
-
-            # call continue_game if no one won
-
-            # return: p1, p2, or ""
+        
+        
 
 
     def continue_game(self, other_player):
@@ -53,10 +55,6 @@ class Gameboard():
 
 
 
-    
-
 '''
 Add Helper functions as needed to handle moves and update board and turns
 '''
-
-    
