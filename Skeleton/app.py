@@ -114,21 +114,21 @@ def p1_move():
 
     if valid_current_turn is True and valid_column is True:
         game.update_board(column_num, 1)        # update board with valid move
-        game.continue_game('p2')
 
         print("the game board: ")
         for row in range(6):
             print(game.board[row])
-        #result_of_game = game.check_if_win()   # check if player1 won
+        
+        game.check_if_win(1)   
+        game.continue_game('p2')
+
     
-
-
     if valid_current_turn is False:        
         return jsonify(move=game.board, invalid = True, reason = "Not your turn. Please wait your turn.", winner = game.game_result)
     elif valid_column is False:
         return jsonify(move=game.board, invalid = True, reason = "Column is filled. Please choose a different column.", winner = game.game_result)
     else:
-        return jsonify(move=game.board, invalid=False, winner=game.game_result)  
+        return jsonify(move=game.board, invalid = False, winner=game.game_result)  
 
 
 '''
@@ -148,20 +148,21 @@ def p2_move():
 
     if valid_current_turn is True and valid_column is True:
         game.update_board(column_num, 2)                    # update board with valid move
-        game.continue_game('p1')
-        
+
         print("the game board: ")
         for row in range(6):
             print(game.board[row])
 
-        #result_of_game = game.check_if_win()   # check if player1 won
+        game.check_if_win(2) 
+        game.continue_game('p1')
+  
 
     if valid_current_turn is False:        
         return jsonify(move=game.board, invalid = True, reason = "Not your turn. Please wait your turn.", winner = game.game_result)
     elif valid_column is False:
         return jsonify(move=game.board, invalid = True, reason = "Column is filled. Please choose a different column.", winner = game.game_result)
     else:
-        return jsonify(move=game.board, invalid=False, winner=game.game_result)
+        return jsonify(move=game.board, invalid = False, winner=game.game_result)
 
 
 
