@@ -40,7 +40,7 @@ class Gameboard():
 
     def check_if_win(self, curr_player_num):
         # check horizontal win (check each row)
-        check_up_to_column = len(self.board[0]) - 4
+        check_up_to_column = len(self.board[0]) - 4 + 1
 
         for row in self.board:
             for c in range(check_up_to_column):
@@ -50,13 +50,12 @@ class Gameboard():
 
         # check vertical win (check each column)
         num_cols = len(self.board[0])
-        check_up_to_row = len(self.board) - 4
+        check_up_to_row = len(self.board) - 4 + 1
 
         for c in range(num_cols):
             for r in range(check_up_to_row):
-                pot_col = [row[c] for row in self.board]
+                pot_col = [row[c] for row in self.board][r:r+4]
                 if pot_col == [curr_player_num, curr_player_num, curr_player_num, curr_player_num]:
-                    print(pot_col)
                     self.game_result = self.current_turn
                     return None
 
