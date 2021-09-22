@@ -59,6 +59,22 @@ class Gameboard():
                     self.game_result = self.current_turn
                     return None
 
+        # check / diagonal win
+        num_rows = len(self.board)
+
+        for c in range(num_cols - 3):
+            for r in range(3, num_rows):
+                if self.board[r][c] == curr_player_num and self.board[r-1][c+1] == curr_player_num and self.board[r-2][c+2] == curr_player_num and self.board[r-3][c+3] == curr_player_num:
+                    self.game_result = self.current_turn
+                    return None 
+
+        # check \ diagonal win
+        for c in range(num_cols - 3):
+            for r in range(num_rows - 3):
+                if self.board[r][c] == curr_player_num and self.board[r+1][c+1] == curr_player_num and self.board[r+2][c+2] == curr_player_num and self.board[r+3][c+3] == curr_player_num:
+                    self.game_result = self.current_turn
+                    return None 
+
         return None
 
 
