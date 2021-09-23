@@ -14,14 +14,10 @@ class Gameboard():
     '''
 
     def check_current_turn(self, current_player):
-        if self.current_turn == current_player:
-            return True
-        return False
+        return True if self.current_turn == current_player else False
 
     def check_filled_column(self, column_num):
-        if self.board[0][column_num - 1] == 0:
-            return True  
-        return False
+        return True if self.board[0][column_num - 1] == 0 else False
 
     def update_board(self, column_num, color):
         column_index = column_num - 1
