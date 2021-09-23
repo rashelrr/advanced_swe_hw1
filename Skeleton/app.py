@@ -125,8 +125,12 @@ def p1_move():
             for row in range(6):
                 print(game.board[row])
             
-            game.check_if_win(game.player1)                  
+            has_won = game.check_if_win(game.player1)   
             game.continue_game('p2')
+
+            if has_won is True:
+                game.remaining_moves = 0
+
         
         if valid_current_turn is False:        
             return jsonify(move=game.board, invalid = True, reason = "Not your turn. Please wait your turn.", winner = game.game_result)
@@ -161,8 +165,11 @@ def p2_move():
             for row in range(6):
                 print(game.board[row])
 
-            game.check_if_win(game.player2)
+            has_won = game.check_if_win(game.player2)
             game.continue_game('p1')
+
+            if has_won is True:
+                game.remaining_moves = 0
 
         if valid_current_turn is False:        
             return jsonify(move=game.board, invalid = True, reason = "Not your turn. Please wait your turn.", winner = game.game_result)

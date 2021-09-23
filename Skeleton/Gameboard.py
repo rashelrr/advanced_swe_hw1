@@ -42,7 +42,7 @@ class Gameboard():
             for c in range(check_up_to_column):
                 if row[c:c+4] == [color, color, color, color]:
                     self.game_result = self.current_turn
-                    return None
+                    return True
 
         # check vertical win (check each column)
         num_cols = len(self.board[0])
@@ -53,7 +53,7 @@ class Gameboard():
                 pot_col = [row[c] for row in self.board][r:r+4]
                 if pot_col == [color, color, color, color]:
                     self.game_result = self.current_turn
-                    return None
+                    return True
 
         # check if / diagonal win
         num_rows = len(self.board)
@@ -62,16 +62,16 @@ class Gameboard():
             for r in range(3, num_rows):
                 if self.board[r][c] == color and self.board[r-1][c+1] == color and self.board[r-2][c+2] == color and self.board[r-3][c+3] == color:
                     self.game_result = self.current_turn
-                    return None 
+                    return True
 
         # check if \ diagonal win
         for c in range(num_cols - 3):
             for r in range(num_rows - 3):
                 if self.board[r][c] == color and self.board[r+1][c+1] == color and self.board[r+2][c+2] == color and self.board[r+3][c+3] == color:
                     self.game_result = self.current_turn
-                    return None 
+                    return True
 
-        return None
+        return False
 
 
     def continue_game(self, other_player):
