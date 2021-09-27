@@ -13,6 +13,16 @@ class Gameboard():
     Add Helper functions as needed to handle moves and update board and turns
     '''
 
+    def set_p2_color(self):
+        if self.player1 == "red":
+            self.player2 = "yellow"
+        elif self.player1 == "yellow":
+            self.player2 = "red"
+        else:
+            self.player2 = "Error"
+
+        return None
+
     def check_current_turn(self, current_player):
         return True if self.current_turn == current_player else False
 
@@ -31,9 +41,12 @@ class Gameboard():
         return None
 
     def check_if_win(self, color):
-        # check horizontal win (check each row)
+        num_rows = len(self.board)
+        num_cols = len(self.board[0])
+        check_up_to_row = len(self.board) - 4 + 1
         check_up_to_column = len(self.board[0]) - 4 + 1
 
+        # check horizontal win (check each row)
         for row in self.board:
             for c in range(check_up_to_column):
                 if row[c:c+4] == [color, color, color, color]:
@@ -41,9 +54,6 @@ class Gameboard():
                     return True
 
         # check vertical win (check each column)
-        num_cols = len(self.board[0])
-        check_up_to_row = len(self.board) - 4 + 1
-
         for c in range(num_cols):
             for r in range(check_up_to_row):
                 pot_col = [row[c] for row in self.board][r:r+4]
@@ -52,8 +62,6 @@ class Gameboard():
                     return True
 
         # check if / diagonal win
-        num_rows = len(self.board)
-
         for c in range(num_cols - 3):
             for r in range(3, num_rows):
                 if self.board[r][c] == color and self.board[r-1][c+1] == color and self.board[r-2][c+2] == color and self.board[r-3][c+3] == color:
@@ -68,7 +76,6 @@ class Gameboard():
                     return True
 
         return False
-
 
     def continue_game(self, other_player):
         self.remaining_moves -= 1
