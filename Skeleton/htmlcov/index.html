@@ -18,7 +18,7 @@
 <div id="header">
     <div class="content">
         <h1>Coverage report:
-            <span class="pc_cov">59%</span>
+            <span class="pc_cov">82%</span>
         </h1>
         <img id="keyboard_icon" src="keybd_closed.png" alt="Show keyboard shortcuts" />
         <form id="filter_container">
@@ -35,6 +35,8 @@
         <span class="key">s</span>
         <span class="key">m</span>
         <span class="key">x</span>
+        <span class="key">b</span>
+        <span class="key">p</span>
         <span class="key">c</span> &nbsp; change column sorting
     </p>
     </div>
@@ -47,39 +49,49 @@
                 <th class="shortkey_s">statements</th>
                 <th class="shortkey_m">missing</th>
                 <th class="shortkey_x">excluded</th>
+                <th class="shortkey_b">branches</th>
+                <th class="shortkey_p">partial</th>
                 <th class="right shortkey_c">coverage</th>
             </tr>
         </thead>
         <tfoot>
             <tr class="total">
                 <td class="name left">Total</td>
-                <td>116</td>
-                <td>48</td>
+                <td>178</td>
+                <td>32</td>
                 <td>0</td>
-                <td class="right" data-ratio="68 116">59%</td>
+                <td>56</td>
+                <td>3</td>
+                <td class="right" data-ratio="191 234">82%</td>
             </tr>
         </tfoot>
         <tbody>
             <tr class="file">
                 <td class="name left"><a href="Gameboard_py.html">Gameboard.py</a></td>
                 <td>58</td>
-                <td>27</td>
+                <td>11</td>
                 <td>0</td>
-                <td class="right" data-ratio="31 58">53%</td>
+                <td>36</td>
+                <td>2</td>
+                <td class="right" data-ratio="77 94">82%</td>
             </tr>
             <tr class="file">
                 <td class="name left"><a href="db_py.html">db.py</a></td>
                 <td>26</td>
                 <td>20</td>
                 <td>0</td>
-                <td class="right" data-ratio="6 26">23%</td>
+                <td>4</td>
+                <td>0</td>
+                <td class="right" data-ratio="6 30">20%</td>
             </tr>
             <tr class="file">
                 <td class="name left"><a href="test_Gameboard_py.html">test_Gameboard.py</a></td>
-                <td>32</td>
+                <td>94</td>
                 <td>1</td>
                 <td>0</td>
-                <td class="right" data-ratio="31 32">97%</td>
+                <td>16</td>
+                <td>1</td>
+                <td class="right" data-ratio="108 110">98%</td>
             </tr>
         </tbody>
     </table>
@@ -91,7 +103,7 @@
     <div class="content">
         <p>
             <a class="nav" href="https://coverage.readthedocs.io">coverage.py v5.5</a>,
-            created at 2021-09-28 02:10 -0400
+            created at 2021-09-28 22:23 -0400
         </p>
     </div>
 </div>

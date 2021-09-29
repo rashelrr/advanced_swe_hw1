@@ -147,29 +147,46 @@ class Test_TestGameboard(unittest.TestCase):
         # assert winner is player1
         self.assertTrue(self.gameboard.game_result, 'p1')
 
-    '''def test_happy_move(self):
+    def test_happy_move(self):
         # Checks if happy path for correct move
 
-        self.gameboard.player1 = "red"
-        self.gameboard.player2 = "yellow"
-        self.gameboard.board = [[0, 0, 0, 0, 0, 0, 0],
-                                [0, 0, 0, 0, 0, 0, 0],
-                                [0, 0, 0, 0, 0, 0, 0],
-                                [0, 0, 0, 0, 0, 0, 0],
-                                [0, 0, 'yellow', 0, 0, 0, 0],
-                                [0, 0, 'red', 'red', 0, 0, 0]]
-        self.gameboard.current_turn = 'p2'
-        self.gameboard.remaining_moves = 39
-        column_num = 3
+        # set up game
+        p1_coordinates = [(5, 2)]
+        p2_coordinates = [(4, 2)]
+        self.set_up_game("red", "yellow", "", 'p1', 40)
+        self.set_up_board("red", "yellow", self.gameboard.board,
+                          p1_coordinates, p2_coordinates)
+        column_num = 4
 
-        self.gameboard.update_board(column_num, self.gameboard.player2)
-        expected_board = [[0, 0, 0, 0, 0, 0, 0],
-                          [0, 0, 0, 0, 0, 0, 0],
-                          [0, 0, 0, 0, 0, 0, 0],
-                          [0, 0, 'yellow', 0, 0, 0, 0],
-                          [0, 0, 'yellow', 0, 0, 0, 0],
-                          [0, 0, 'red', 'red', 0, 0, 0]]
-        self.assertEqual(self.gameboard.board, expected_board) '''
+        # updates board with happy move
+        self.gameboard.update_board(column_num, self.gameboard.player1)
+        p1_coordinates.append((5, 3))
+        expected_board = [[0 for x in range(7)] for y in range(6)]
+        expected_board = self.set_up_board("red", "yellow", expected_board,
+                                           p1_coordinates, p2_coordinates)
+
+        # assert result board and expected board are equal
+        self.assertEqual(self.gameboard.board, expected_board)
+
+    def test_valid_current_turn(self):
+        # Check invalid move - not current player's turn
+
+        # set up game
+        self.set_up_game("red", "yellow", "", 'p1', 42)
+
+        # this is a valid move
+        column_num = 3
+        self.gameboard.update_board(column_num, self.gameboard.current_turn)
+        self.gameboard.continue_game('p2')
+
+        # invalid move, it is not p1's turn
+        column_num = 4
+        valid_curr_turn = self.gameboard.check_current_turn('p1')
+
+        self.assertFalse(valid_curr_turn)
+
+    
+
 
 if __name__ == '__main__':
     unittest.main()
