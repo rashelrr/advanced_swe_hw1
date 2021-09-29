@@ -24,6 +24,9 @@ class Gameboard():
 
         return None
 
+    def check_p1_picked_color(self):
+        return False if self.player1 == "" else True
+
     def check_current_turn(self, current_player):
         return True if self.current_turn == current_player else False
 
@@ -31,15 +34,26 @@ class Gameboard():
         return True if self.board[0][column_num - 1] == 0 else False
 
     def update_board(self, column_num, color):
-        column_index = column_num - 1
-        largest_row_index = len(self.board) - 1
 
-        for r in range(largest_row_index, -1, -1):
-            if self.board[r][column_index] == 0:
-                self.board[r][column_index] = color
-                break
+        can_update_board = False  # winner already declared
 
-        return None
+        if self.game_result == "" and self.remaining_moves > 0:
+            # no winner declared
+            can_update_board = True
+            column_index = column_num - 1
+            largest_row_index = len(self.board) - 1
+
+            for r in range(largest_row_index, -1, -1):
+                if self.board[r][column_index] == 0:
+                    self.board[r][column_index] = color
+                    break
+
+            self.continue_game()
+
+        return can_update_board
+
+    def check_if_draw(self):
+        return True if self.remaining_moves == 0 else False
 
     def check_if_win(self, color):
         num_rows = len(self.board)
@@ -82,8 +96,12 @@ class Gameboard():
                     self.game_result = self.current_turn
                     return True
 
+        # at this point, either a tie or nothing
         return False
 
-    def continue_game(self, other_player):
+    def continue_game(self):
         self.remaining_moves -= 1
-        self.current_turn = other_player
+        if self.current_turn == 'p1':
+            self.current_turn = 'p2'
+        else:
+            self.current_turn = 'p1'

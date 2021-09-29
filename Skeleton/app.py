@@ -84,14 +84,12 @@ Process Player 1's move
 
 @app.route('/move1', methods=['POST'])
 def p1_move():
-    if game.player1 == "":  # check if color selected
+    if game.check_p1_picked_color() is False:  # check if color selected
         return jsonify(move=game.board, invalid=True,
                        reason="P1 must pick a color.", winner=game.game_result)
-    elif game.remaining_moves == 0:  # check if draw
-        return jsonify(move=game.board, invalid=True, reason="Tie. No winner.",
-                       winner=game.game_result)
-    elif game.game_result != "":  # check if already won, static
-        return jsonify(move=game.board, invalid=True, reason="End of game.",
+    elif game.check_if_draw() is True:
+        return jsonify(move=game.board, invalid=True,
+                       reason="Tie. No winner.",
                        winner=game.game_result)
     else:
         attempted_move = request.get_json()
@@ -112,22 +110,16 @@ def p1_move():
                            winner=game.game_result)
         else:
             # update board with move
-            game.update_board(column_num, game.player1)
+            can_update_board = game.update_board(column_num, game.player1)
 
-            '''
-            # print board (debugging)
-            print("the game board: ")
-            for row in range(6):
-                print(game.board[row])
-            '''
+            if can_update_board is True:
+                game.check_if_win(game.player1)
 
-            # check if won
-            has_won = game.check_if_win(game.player1)
-            if not has_won:
-                game.continue_game('p2')
-
-            return jsonify(move=game.board, invalid=False,
-                           winner=game.game_result)
+                return jsonify(move=game.board, invalid=False,
+                               winner=game.game_result)
+            else:
+                return jsonify(move=game.board, invalid=True,
+                               reason="End of game.", winner=game.game_result)
 
 
 '''
@@ -137,11 +129,9 @@ Same as '/move1' but instead proccess Player 2
 
 @app.route('/move2', methods=['POST'])
 def p2_move():
-    if game.remaining_moves == 0:  # check if draw
-        return jsonify(move=game.board, invalid=True, reason="Tie. No winner.",
-                       winner=game.game_result)
-    elif game.game_result != "":  # check if already won, static
-        return jsonify(move=game.board, invalid=True, reason="End of game.",
+    if game.check_if_draw() is True:
+        return jsonify(move=game.board, invalid=True,
+                       reason="Tie. No winner.",
                        winner=game.game_result)
     else:
         attempted_move = request.get_json()
@@ -162,15 +152,16 @@ def p2_move():
                            winner=game.game_result)
         else:
             # update board with move
-            game.update_board(column_num, game.player2)
+            can_update_board = game.update_board(column_num, game.player2)
 
-            # check if won
-            has_won = game.check_if_win(game.player2)
-            if not has_won:
-                game.continue_game('p1')
+            if can_update_board is True:
+                game.check_if_win(game.player2)
 
-            return jsonify(move=game.board, invalid=False,
-                           winner=game.game_result)
+                return jsonify(move=game.board, invalid=False,
+                               winner=game.game_result)
+            else:
+                return jsonify(move=game.board, invalid=True,
+                               reason="End of game.", winner=game.game_result)
 
 
 if __name__ == '__main__':

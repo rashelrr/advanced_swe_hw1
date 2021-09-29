@@ -147,7 +147,7 @@ class Test_TestGameboard(unittest.TestCase):
         # assert winner is player1
         self.assertTrue(self.gameboard.game_result, 'p1')
 
-    def test_happy_move(self):
+    def test_valid_correct_move(self):
         # Checks if happy path for correct move
 
         # set up game
@@ -168,24 +168,67 @@ class Test_TestGameboard(unittest.TestCase):
         # assert result board and expected board are equal
         self.assertEqual(self.gameboard.board, expected_board)
 
-    def test_valid_current_turn(self):
+    def test_invalid_move_current_turn(self):
         # Check invalid move - not current player's turn
 
         # set up game
-        self.set_up_game("red", "yellow", "", 'p1', 42)
+        p1_coordinates = [(5, 2)]
+        p2_coordinates = []
+        self.set_up_game("red", "yellow", "", 'p2', 41)
+        self.set_up_board("red", "yellow", self.gameboard.board,
+                          p1_coordinates, p2_coordinates)
 
-        # this is a valid move
-        column_num = 3
-        self.gameboard.update_board(column_num, self.gameboard.current_turn)
-        self.gameboard.continue_game('p2')
-
-        # invalid move, it is not p1's turn
-        column_num = 4
         valid_curr_turn = self.gameboard.check_current_turn('p1')
 
         self.assertFalse(valid_curr_turn)
+        self.assertEqual(self.gameboard.current_turn, 'p2')
 
-    
+    def test_invalid_move_winner_declared(self):
+        # Check invalid move - winner already declared
+
+        # set up game
+        p1_coordinates = [(5, 0), (5, 1), (5, 2), (5, 3)]
+        p2_coordinates = [(4, 0), (4, 1), (4, 2)]
+        self.set_up_game("red", "yellow", 'p1', 'p2', 35)
+        self.set_up_board("red", "yellow", self.gameboard.board,
+                          p1_coordinates, p2_coordinates)
+        column_num = 4
+
+        can_update_board = self.gameboard.update_board(column_num,
+                                                       self.gameboard.player2)
+
+        # assert that move cannot be done
+        self.assertFalse(can_update_board)
+
+        # assert that winner already declared
+        self.assertNotEqual(self.gameboard.game_result, "")
+
+    def test_invalid_move_color_not_picked(self):
+        # Check invalid move - move when color not picked by p1 yet
+        is_color_picked = self.gameboard.check_p1_picked_color()
+        self.assertFalse(is_color_picked)
+
+    def test_invalid_move_draw(self):
+        # Check invalid move - draw
+
+        # set up game
+        self.set_up_game("red", "yellow", "", 'p1', 0)
+
+        if_draw = self.gameboard.check_if_draw()
+        self.assertTrue(if_draw)
+
+    def test_invalid_move_column_filled(self):
+        # set up game
+        p1_coordinates = [(5, 1), (3, 1), (1, 1)]
+        p2_coordinates = [(4, 1), (2, 1), (0, 1)]
+        self.set_up_game("red", "yellow", "", 'p1', 36)
+        self.set_up_board("red", "yellow", self.gameboard.board,
+                          p1_coordinates, p2_coordinates)
+        column_num = 2
+
+        # assert that column is filled (no space in col to add entry)
+        col_filled = self.gameboard.check_filled_column(column_num)
+        self.assertFalse(col_filled)
 
 
 if __name__ == '__main__':
