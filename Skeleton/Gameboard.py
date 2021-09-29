@@ -1,5 +1,6 @@
 import db
 
+
 class Gameboard():
     def __init__(self):
         self.player1 = ""
@@ -32,12 +33,12 @@ class Gameboard():
     def update_board(self, column_num, color):
         column_index = column_num - 1
         largest_row_index = len(self.board) - 1
-        
+
         for r in range(largest_row_index, -1, -1):
             if self.board[r][column_index] == 0:
                 self.board[r][column_index] = color
                 break
-        
+
         return None
 
     def check_if_win(self, color):
@@ -64,14 +65,20 @@ class Gameboard():
         # check if / diagonal win
         for c in range(num_cols - 3):
             for r in range(3, num_rows):
-                if self.board[r][c] == color and self.board[r-1][c+1] == color and self.board[r-2][c+2] == color and self.board[r-3][c+3] == color:
+                if (self.board[r][c] == color and
+                        self.board[r-1][c+1] == color and
+                        self.board[r-2][c+2] == color and
+                        self.board[r-3][c+3] == color):
                     self.game_result = self.current_turn
                     return True
 
         # check if \ diagonal win
         for c in range(num_cols - 3):
             for r in range(num_rows - 3):
-                if self.board[r][c] == color and self.board[r+1][c+1] == color and self.board[r+2][c+2] == color and self.board[r+3][c+3] == color:
+                if (self.board[r][c] == color and
+                        self.board[r+1][c+1] == color and
+                        self.board[r+2][c+2] == color and
+                        self.board[r+3][c+3] == color):
                     self.game_result = self.current_turn
                     return True
 
