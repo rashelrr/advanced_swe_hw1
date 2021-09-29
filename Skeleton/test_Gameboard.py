@@ -23,7 +23,7 @@ class Test_TestGameboard(unittest.TestCase):
 
     def set_up_board(self, player1, player2, board, p1_coordinates,
                      p2_coordinates):
-        # Sets up board
+        # Set up board
         for coordinate in p1_coordinates:
             r = coordinate[0]
             c = coordinate[1]
@@ -200,13 +200,14 @@ class Test_TestGameboard(unittest.TestCase):
         # assert that move cannot be done
         self.assertFalse(can_update_board)
 
-        # assert that winner already declared
+        # assert that game_result specifies winner
         self.assertNotEqual(self.gameboard.game_result, "")
 
     def test_invalid_move_color_not_picked(self):
         # Check invalid move - move when color not picked by p1 yet
         is_color_picked = self.gameboard.check_p1_picked_color()
         self.assertFalse(is_color_picked)
+        self.assertEqual(self.gameboard.player1, "")
 
     def test_invalid_move_draw(self):
         # Check invalid move - draw

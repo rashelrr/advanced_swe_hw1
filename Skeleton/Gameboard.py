@@ -22,8 +22,6 @@ class Gameboard():
         else:
             self.player2 = "Error"
 
-        return None
-
     def check_p1_picked_color(self):
         return False if self.player1 == "" else True
 

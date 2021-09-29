@@ -88,8 +88,7 @@ def p1_move():
         return jsonify(move=game.board, invalid=True,
                        reason="P1 must pick a color.", winner=game.game_result)
     elif game.check_if_draw() is True:
-        return jsonify(move=game.board, invalid=True,
-                       reason="Tie. No winner.",
+        return jsonify(move=game.board, invalid=True, reason="Tie. No winner.",
                        winner=game.game_result)
     else:
         attempted_move = request.get_json()
@@ -114,7 +113,6 @@ def p1_move():
 
             if can_update_board is True:
                 game.check_if_win(game.player1)
-
                 return jsonify(move=game.board, invalid=False,
                                winner=game.game_result)
             else:
@@ -129,9 +127,11 @@ Same as '/move1' but instead proccess Player 2
 
 @app.route('/move2', methods=['POST'])
 def p2_move():
-    if game.check_if_draw() is True:
+    if game.check_p1_picked_color() is False:  # check if color selected
         return jsonify(move=game.board, invalid=True,
-                       reason="Tie. No winner.",
+                       reason="P1 must pick a color.", winner=game.game_result)
+    elif game.check_if_draw() is True:
+        return jsonify(move=game.board, invalid=True, reason="Tie. No winner.",
                        winner=game.game_result)
     else:
         attempted_move = request.get_json()
@@ -156,7 +156,6 @@ def p2_move():
 
             if can_update_board is True:
                 game.check_if_win(game.player2)
-
                 return jsonify(move=game.board, invalid=False,
                                winner=game.game_result)
             else:
