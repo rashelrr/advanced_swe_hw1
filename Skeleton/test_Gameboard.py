@@ -230,7 +230,3 @@ class Test_TestGameboard(unittest.TestCase):
         # assert that column is filled (no space in col to add entry)
         col_filled = self.gameboard.check_filled_column(column_num)
         self.assertFalse(col_filled)
-
-
-if __name__ == '__main__':
-    unittest.main()
