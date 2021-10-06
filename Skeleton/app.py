@@ -22,6 +22,9 @@ Initial Webpage where gameboard is initialized
 
 @app.route('/', methods=['GET'])
 def player1_connect():
+    # db.clear()
+    # db.init_db()
+    game.__init__()
     return render_template('player1_connect.html', status='Pick a Color.')
 
 
@@ -49,6 +52,7 @@ Assign player1 their color
 
 @app.route('/p1Color', methods=['GET'])
 def player1_config():
+    # db.getMove()
     game.player1 = request.args.get('color')
     return render_template('player1_connect.html', status=game.player1)
 
@@ -65,6 +69,7 @@ Assign player2 their color
 
 @app.route('/p2Join', methods=['GET'])
 def p2Join():
+    # db.getMove()
     game.set_p2_color()
     return render_template('p2Join.html', status=game.player2)
 
@@ -112,6 +117,9 @@ def p1_move():
             can_update_board = game.update_board(column_num, game.player1)
 
             if can_update_board is True:
+                # move = (game.current_turn, str(game.board), game.game_result,
+                  #      game.player1, game.player2, game.remaining_moves)
+                # db.add_move(move)
                 game.check_if_win(game.player1)
                 return jsonify(move=game.board, invalid=False,
                                winner=game.game_result)
@@ -153,9 +161,11 @@ def p2_move():
         else:
             # update board with move
             can_update_board = game.update_board(column_num, game.player2)
-
             if can_update_board is True:
-                game.check_if_win(game.player2)
+                # game.check_if_win(game.player2)
+                # move = (game.current_turn, str(game.board), game.game_result,
+                  #      game.player1, game.player2, game.remaining_moves)
+                # db.add_move(move)
                 return jsonify(move=game.board, invalid=False,
                                winner=game.game_result)
             else:
