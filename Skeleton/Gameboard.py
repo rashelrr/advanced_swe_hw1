@@ -46,8 +46,6 @@ class Gameboard():
                     self.board[r][column_index] = color
                     break
 
-            self.continue_game()
-
         return can_update_board
 
     def check_if_draw(self):
