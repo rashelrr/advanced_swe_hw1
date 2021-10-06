@@ -120,10 +120,7 @@ def p1_move():
                 # move = (game.current_turn, str(game.board), game.game_result,
                 # game.player1, game.player2, game.remaining_moves)
                 # db.add_move(move)
-                has_won = game.check_if_win(game.player1)
-
-                if has_won is False:
-                    game.continue_game()
+                game.check_if_win(game.player1)
                 return jsonify(move=game.board, invalid=False,
                                winner=game.game_result)
             else:
@@ -169,10 +166,7 @@ def p2_move():
                 # move = (game.current_turn, str(game.board), game.game_result,
                 # game.player1, game.player2, game.remaining_moves)
                 # db.add_move(move)
-                has_won = game.check_if_win(game.player2)
-
-                if has_won is False:
-                    game.continue_game()
+                game.check_if_win(game.player2)
                 return jsonify(move=game.board, invalid=False,
                                winner=game.game_result)
             else:

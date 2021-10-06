@@ -93,6 +93,7 @@ class Gameboard():
                     return True
 
         # at this point, either a tie or nothing
+        self.continue_game()
         return False
 
     def continue_game(self):
