@@ -93,11 +93,13 @@ class Gameboard():
                     return True
 
         # at this point, either a tie or nothing
-        self.continue_game()
+        # self.continue_game()
         return False
 
-    def continue_game(self):
+    def update_remaining_moves(self):
         self.remaining_moves -= 1
+
+    def update_current_turn(self):
         if self.current_turn == 'p1':
             self.current_turn = 'p2'
         else:

@@ -22,8 +22,8 @@ Initial Webpage where gameboard is initialized
 
 @app.route('/', methods=['GET'])
 def player1_connect():
-    # db.clear()
-    # db.init_db()
+    db.clear()
+    db.init_db()
     game.__init__()
     return render_template('player1_connect.html', status='Pick a Color.')
 
@@ -52,8 +52,10 @@ Assign player1 their color
 
 @app.route('/p1Color', methods=['GET'])
 def player1_config():
-    # db.getMove()
-    game.player1 = request.args.get('color')
+    move = db.getMove()
+    if move is None:
+        game.player1 = request.args.get('color')
+
     return render_template('player1_connect.html', status=game.player1)
 
 
@@ -69,8 +71,10 @@ Assign player2 their color
 
 @app.route('/p2Join', methods=['GET'])
 def p2Join():
-    # db.getMove()
-    game.set_p2_color()
+    move = db.getMove()
+    if move is None:
+        game.set_p2_color()
+
     return render_template('p2Join.html', status=game.player2)
 
 
@@ -101,14 +105,11 @@ def p1_move():
         column_num = int(column[-1])
 
         # check if move is valid
-        valid_current_turn = game.check_current_turn('p1')
-        valid_column = game.check_filled_column(column_num)
-
-        if valid_current_turn is False:
+        if game.check_current_turn('p1') is False:
             return jsonify(move=game.board, invalid=True,
                            reason="Not your turn. Please wait your turn.",
                            winner=game.game_result)
-        elif valid_column is False:
+        elif game.check_filled_column(column_num) is False:
             return jsonify(move=game.board, invalid=True,
                            reason="Column is filled. Choose another column.",
                            winner=game.game_result)
@@ -117,10 +118,14 @@ def p1_move():
             can_update_board = game.update_board(column_num, game.player1)
 
             if can_update_board is True:
-                # move = (game.current_turn, str(game.board), game.game_result,
-                # game.player1, game.player2, game.remaining_moves)
-                # db.add_move(move)
                 game.check_if_win(game.player1)
+
+                game.update_remaining_moves()
+                move = (game.current_turn, str(game.board), game.game_result,
+                        game.player1, game.player2, game.remaining_moves)
+                db.add_move(move)
+                game.update_current_turn()
+
                 return jsonify(move=game.board, invalid=False,
                                winner=game.game_result)
             else:
@@ -147,26 +152,27 @@ def p2_move():
         column_num = int(column[-1])
 
         # check if move is valid
-        valid_current_turn = game.check_current_turn('p2')
-        valid_column = game.check_filled_column(column_num)
-
-        if valid_current_turn is False:
+        if game.check_current_turn('p2') is False:
             return jsonify(move=game.board, invalid=True,
                            reason="Not your turn. Please wait your turn.",
                            winner=game.game_result)
-        elif valid_column is False:
+        elif game.check_filled_column(column_num) is False:
             return jsonify(move=game.board, invalid=True,
                            reason="Column is filled. Choose another column.",
                            winner=game.game_result)
         else:
             # update board with move
             can_update_board = game.update_board(column_num, game.player2)
-            
+
             if can_update_board is True:
-                # move = (game.current_turn, str(game.board), game.game_result,
-                # game.player1, game.player2, game.remaining_moves)
-                # db.add_move(move)
                 game.check_if_win(game.player2)
+
+                game.update_remaining_moves()
+                move = (game.current_turn, str(game.board), game.game_result,
+                        game.player1, game.player2, game.remaining_moves)
+                db.add_move(move)
+                game.update_current_turn()
+
                 return jsonify(move=game.board, invalid=False,
                                winner=game.game_result)
             else:
