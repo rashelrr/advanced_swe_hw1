@@ -14,6 +14,40 @@ class Gameboard():
     Add Helper functions as needed to handle moves and update board and turns
     '''
 
+    def continue_game_with_last_move(self, move):
+        # Resets game values with last move saved in database
+        if move[0] == 'p1':
+            self.current_turn = 'p2'
+        else:
+            self.current_turn = 'p1'
+
+        self.game_result = move[2]
+        self.player1 = move[3]
+        self.player2 = move[4]
+        self.remaining_moves = move[5]
+
+        # reformats string board and converts into 1D array
+        str_board = move[1]
+        str_board = str_board.replace('[', '')
+        str_board = str_board.replace(']', '')
+        str_board = str_board.replace("'", '')
+        board_lst = str_board.split(', ')
+
+        # convert numerical strings to ints
+        for i, x in enumerate(board_lst):
+            if x == "red" or x == "yellow":
+                continue
+            else:
+                board_lst[i] = int(x)
+
+        # convert to 2D array
+        board_2d_lst = []
+        for i in range(len(board_lst)):
+            if i % 7 == 0:
+                board_2d_lst.append(board_lst[i: i + 7])
+
+        self.board = board_2d_lst
+
     def set_p2_color(self):
         if self.player1 == "red":
             self.player2 = "yellow"
@@ -93,7 +127,6 @@ class Gameboard():
                     return True
 
         # at this point, either a tie or nothing
-        # self.continue_game()
         return False
 
     def update_remaining_moves(self):

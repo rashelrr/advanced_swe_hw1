@@ -55,6 +55,8 @@ def player1_config():
     move = db.getMove()
     if move is None:
         game.player1 = request.args.get('color')
+    else:
+        game.continue_game_with_last_move(move)
 
     return render_template('player1_connect.html', status=game.player1)
 
@@ -74,6 +76,8 @@ def p2Join():
     move = db.getMove()
     if move is None:
         game.set_p2_color()
+    else:
+        game.continue_game_with_last_move(move)
 
     return render_template('p2Join.html', status=game.player2)
 
