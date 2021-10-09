@@ -36,6 +36,9 @@ class Test_TestGameboard(unittest.TestCase):
         return board
 
     def test_continue_game_with_last_move(self):
+        # Checks that Gameboard fields are set correctly with the data saved
+        # in the last row of the database (but changing current_turn to the
+        # next player)
         actual_board = [[0, 0, 0, 0, 0, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0],
@@ -45,8 +48,8 @@ class Test_TestGameboard(unittest.TestCase):
         test_board = str(actual_board)
 
         last_move = ('p2', test_board, '', 'red', 'yellow', 39)
-
         self.gameboard.continue_game_with_last_move(last_move)
+
         self.assertEqual(self.gameboard.current_turn, 'p1')
         self.assertEqual(self.gameboard.board, actual_board)
         self.assertEqual(self.gameboard.game_result, '')
@@ -249,6 +252,3 @@ class Test_TestGameboard(unittest.TestCase):
         # assert that column is filled (no space in col to add entry)
         col_filled = self.gameboard.check_filled_column(column_num)
         self.assertFalse(col_filled)
-
-if __name__ == '__main__':
-    unittest.main()
