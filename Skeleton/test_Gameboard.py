@@ -35,6 +35,25 @@ class Test_TestGameboard(unittest.TestCase):
 
         return board
 
+    def test_continue_game_with_last_move(self):
+        actual_board = [[0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 'yellow'],
+                        [0, 0, 0, 0, 0, 'red', 'red']]
+        test_board = str(actual_board)
+
+        last_move = ('p2', test_board, '', 'red', 'yellow', 39)
+
+        self.gameboard.continue_game_with_last_move(last_move)
+        self.assertEqual(self.gameboard.current_turn, 'p1')
+        self.assertEqual(self.gameboard.board, actual_board)
+        self.assertEqual(self.gameboard.game_result, '')
+        self.assertEqual(self.gameboard.player1, 'red')
+        self.assertEqual(self.gameboard.player2, 'yellow')
+        self.assertEqual(self.gameboard.remaining_moves, 39)
+
     def test_horizontal_win(self):
         # Checks if there is a winning move in horizontal direction
 
@@ -200,8 +219,8 @@ class Test_TestGameboard(unittest.TestCase):
         # assert that move cannot be done
         self.assertFalse(can_update_board)
 
-        # assert that game_result specifies winner
-        self.assertNotEqual(self.gameboard.game_result, "")
+        # assert that game_result specifies winner, p1
+        self.assertEqual(self.gameboard.game_result, 'p1')
 
     def test_invalid_move_color_not_picked(self):
         # Check invalid move - move when color not picked by p1 yet
@@ -230,3 +249,6 @@ class Test_TestGameboard(unittest.TestCase):
         # assert that column is filled (no space in col to add entry)
         col_filled = self.gameboard.check_filled_column(column_num)
         self.assertFalse(col_filled)
+
+if __name__ == '__main__':
+    unittest.main()
