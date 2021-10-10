@@ -1,4 +1,5 @@
 import db
+from json import loads
 
 
 class Gameboard():
@@ -21,32 +22,11 @@ class Gameboard():
         else:
             self.current_turn = 'p1'
 
+        self.board = loads(move[1])
         self.game_result = move[2]
         self.player1 = move[3]
         self.player2 = move[4]
         self.remaining_moves = move[5]
-
-        # reformats string board and converts into 1D array
-        str_board = move[1]
-        str_board = str_board.replace('[', '')
-        str_board = str_board.replace(']', '')
-        str_board = str_board.replace("'", '')
-        board_lst = str_board.split(', ')
-
-        # convert numerical strings to ints
-        for i, x in enumerate(board_lst):
-            if x == "red" or x == "yellow":
-                continue
-            else:
-                board_lst[i] = int(x)
-
-        # convert to 2D array
-        board_2d_lst = []
-        for i in range(len(board_lst)):
-            if i % 7 == 0:
-                board_2d_lst.append(board_lst[i: i + 7])
-
-        self.board = board_2d_lst
 
     def set_p2_color(self):
         if self.player1 == "red":
@@ -66,7 +46,6 @@ class Gameboard():
         return True if self.board[0][column_num - 1] == 0 else False
 
     def update_board(self, column_num, color):
-
         can_update_board = False  # winner already declared
 
         if self.game_result == "" and self.remaining_moves > 0:

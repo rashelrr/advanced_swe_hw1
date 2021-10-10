@@ -1,6 +1,6 @@
 import unittest
 from Gameboard import Gameboard
-
+from json import dumps
 
 class Test_TestGameboard(unittest.TestCase):
 
@@ -45,7 +45,7 @@ class Test_TestGameboard(unittest.TestCase):
                         [0, 0, 0, 0, 0, 0, 0],
                         [0, 0, 0, 0, 0, 0, 'yellow'],
                         [0, 0, 0, 0, 0, 'red', 'red']]
-        test_board = str(actual_board)
+        test_board = dumps(actual_board)
 
         last_move = ('p2', test_board, '', 'red', 'yellow', 39)
         self.gameboard.continue_game_with_last_move(last_move)

@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, jsonify, make_response
-from json import dump
+from json import dumps
 from Gameboard import Gameboard
 import db
 
@@ -24,7 +24,7 @@ Initial Webpage where gameboard is initialized
 def player1_connect():
     db.clear()
     db.init_db()
-    game.__init__()
+    game.__init__() # resets gameboard values
     return render_template('player1_connect.html', status='Pick a Color.')
 
 
@@ -125,7 +125,7 @@ def p1_move():
                 game.check_if_win(game.player1)
 
                 game.update_remaining_moves()
-                move = (game.current_turn, str(game.board), game.game_result,
+                move = (game.current_turn, dumps(game.board), game.game_result,
                         game.player1, game.player2, game.remaining_moves)
                 db.add_move(move)
                 game.update_current_turn()
@@ -172,7 +172,7 @@ def p2_move():
                 game.check_if_win(game.player2)
 
                 game.update_remaining_moves()
-                move = (game.current_turn, str(game.board), game.game_result,
+                move = (game.current_turn, dumps(game.board), game.game_result,
                         game.player1, game.player2, game.remaining_moves)
                 db.add_move(move)
                 game.update_current_turn()
