@@ -2,8 +2,8 @@ import unittest
 from Gameboard import Gameboard
 from json import dumps
 
-class Test_TestGameboard(unittest.TestCase):
 
+class Test_TestGameboard(unittest.TestCase):
     def setUp(self):
         print('setUp')
         self.gameboard = Gameboard()

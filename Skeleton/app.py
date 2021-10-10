@@ -24,7 +24,7 @@ Initial Webpage where gameboard is initialized
 def player1_connect():
     db.clear()
     db.init_db()
-    game.__init__() # resets gameboard values
+    game.__init__()  # resets gameboard values
     return render_template('player1_connect.html', status='Pick a Color.')
 
 
