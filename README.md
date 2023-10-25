@@ -1,5 +1,5 @@
 # About
-Course: Advanced Software Engineering
+Course: Advanced Software Engineering <br>
 Assignment 1: Individual mini-project
 
 Name: Rashel Rojas
