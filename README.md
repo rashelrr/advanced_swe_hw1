@@ -1,4 +1,5 @@
-# COMSW4156_001: ADVANCED SOFTWARE ENGINEERING
+# About
+Course: Advanced Software Engineering
 Assignment 1: Individual mini-project
 
 Name: Rashel Rojas
